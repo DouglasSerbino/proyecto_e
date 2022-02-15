@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/* GENERALMENTE SE CREARA CONTROLADOR POR MODULO, 
+   POR EJEMPLO SI EL MODULO ES DE VENTAS SE HARA UN CONTROLADOR PARA VENTAS 
+   SI ES PARA FINANZAS UN CONTROLADOR PARA TAL.*/
 class Principal extends CI_Controller {
 
 	/*METODO PRINCIPAL*/
@@ -101,12 +104,36 @@ class Principal extends CI_Controller {
 			$Buscar='';
 		}
 		
+		/*PARA LA CONSULTA DE DATOS USAREMOS REPOSITORIOS 
+		QUE NO SON MAS QUE "MINI" CLASES PARA CADA SET DE DATOS
+		SEGUN  EL MODELO
+
+		POR EJEMPLO: 
+		SI NECESITAMOS ACCIONES PARA EL MODELO PRODUCTO
+		EN EL REPOSITORIO TENDREMOS LOS METODOS DE 
+		CREAR, 
+		EDITAR,
+		LEER,
+		ELIMINAR, ETC
+		SEGUN SEA REQUERIDO.
+
+		IMPORTANTE RESPETAR EL MODELO AL CUAL SE LE HARA UN REPOSITORIO.
+
+		SI SON CONSULTAS CON JOINS SE PUEDE HACER EXCEPCION A LA REGLA
+		*/
 		$data['Producto']=$this->model_producto->leer_producto($Buscar);
+
+		//$data['Proveedores'] = .....
+		/* OBSERVACIONES GENERALES CARGAR LA LISTA DE PROVEEDORES EN UN 
+		   CONJUNTO DE DATA Y ESO RETORNAR A LA VISTA
+		   EN LA VISTA SE USA UN FOREACH con un <select> para cargar esos datos.
+		*/
 	    if($this->uri->segment(3)!='')
 	    {
 	    	$idproducto=$this->uri->segment(3);
 	    	$data['producto_actualizar']=$this->model_producto->traer_producto($idproducto);
 	    }
+
 
 		$this->load->view('contenedor',$data);
 	}
